@@ -30,7 +30,8 @@ for file in os.listdir(args.i):
 			numind.append(line[1])
 			numsites.append(line[2])
 
-args.o = args.o.strip("/") + "/"
+if args.o.endswith("/") is False:
+	args.o += "/"
 if os.path.exists(args.o) is False:
     os.mkdir(args.o)
     os.mkdir(args.o + 'OandE/')
