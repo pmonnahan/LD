@@ -8,6 +8,7 @@ parser.add_argument('-p', type=str, metavar='ploidy', required=True, help='2 for
 parser.add_argument('-mf', type=str, metavar='minimum-fraction-of-genotyped-individuals', default='0.9', help='Minimum fraction of individuals in a population that must be genotyped')
 parser.add_argument('-maf', type=str, metavar='MinimumAlleleFrequency', default='0.05', help='minimum minor allele frequency for a site to be considered in a population')
 parser.add_argument('-P', type=str, metavar='print', required=True, help='if true, then print shell scripts and not execute them')
+parser.add_argument('-o', type=str, metavar='output_directory', required=True, help='Directory for output files')
 parser.add_argument('-mem', type=str, metavar='memory', default='10000', help='number of Mb requested to run each job')
 
 args = parser.parse_args()
@@ -29,10 +30,18 @@ for file in os.listdir(args.i):
 			numind.append(line[1])
 			numsites.append(line[2])
 
-if os.path.exists(args.i+'output/') == False:
-    os.mkdir(args.i+'output/')
-    os.mkdir(args.i+'output/OandE/')
-outputdir = str(args.i+'output/')
+args.o = args.o.strip("/") + "/"
+if os.path.exists(args.o) is False:
+    os.mkdir(args.o)
+    os.mkdir(args.o + 'OandE/')
+outputdir = args.o
+
+infofile = open(outputdir + "RunParameters.txt",'w')
+infofile.write("input directory = " + args.i + "\n" +
+				"ploidy = " + args.p + "\n" +
+				"minimum fraction of genotyped individuals = " + args.mf + "\n" +
+				"minimum allele frequency = " + args.maf + "\n" +
+				"output directory = " + args.o + "\n")
 
 
 for j,pop in enumerate(pops):
