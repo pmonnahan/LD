@@ -1,4 +1,4 @@
-import os, sys, subprocess, argparse, random, transposer, numpy, csv,scipy
+import os, sys, subprocess, argparse, random, transposer, numpy, csv, scipy, gzip
 
 # create variables that can be entered in the command line
 parser = argparse.ArgumentParser()
@@ -10,21 +10,28 @@ parser.add_argument('-m', type = str, metavar = 'Missing_Data', required = True,
 parser.add_argument('-mf', type = str, metavar = 'Minimum_Frequency', required = True, help = 'minimum minor allele frequency')
 parser.add_argument('-o', type = str, metavar = 'Output_Prefix', required = True, help = 'Vcfs retain original scaffold name but the concatenated Structure input file will be a text file with specified by output and within the LD_pruned directory')
 parser.add_argument('-s', type = str, metavar = 'Subset?', required = False, default = 'false', help = 'if true, this will subsample polyploid data to create psuedo-diploid data')
-
+parser.add_argument('-c', type = float, metavar = 'maximum_correlation', required = True, default = '1.0', help = 'Maximum correlation between adjacent sites allowed for site to be used')
+parser.add_argument('-gz', type = str, metavar = 'gzipped?', required = True, help = 'are vcfs gzipped (true) or not (false)')
 #output population as 2nd column (must be integer for STRUCTURE*)
 #
 
 args = parser.parse_args()
 
-
 if os.path.exists(args.v + '/LD_Pruned/') == False: #Create folder for output if it doesn't already exist
     os.mkdir(args.v + '/LD_Pruned/')
-
 vcf_list = []
 
 for file in os.listdir(args.v): #get names of vcf files in args.v directory
-    if file[-3:] == 'vcf':
-        vcf_list.append(file)
+    if args.gz == 'true':
+        if file[-3:] == '.gz':
+            vcf_list.append(file)
+
+    elif args.gz == 'false':   
+        if file[-3:] == 'vcf':
+            vcf_list.append(file)
+
+    else:
+        print 'error'
 
 count = 0   
 
@@ -39,16 +46,22 @@ for rep in range(int(args.r)):
     subtempfile= open(args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStructSubSample.txt",'w')
     structfile= open(args.v+ '/LD_Pruned/'+args.o+".StructureInput.rep"+str(rep+1)+".LD_Pruned.txt",'w')
 
-    structfile.write("Ind\tPopName\tPopFlag\t")
+    # structfile.write("Ind\tPopName\tPopFlag\t")
+    structfile.write("\t\t")
 
     if args.s=='true': #Create files if subset is true.
         subfile= open(args.v+ '/LD_Pruned/'+args.o+".StructureInput.rep"+str(rep+1)+".LD_Pruned.Diploidized.txt",'w')
-        subfile.write("Ind\tPopName\tPopFlag\t")
-    for iii,vcf in enumerate(vcf_list):  #cycle over vcf's in args.v directory.
+        #subfile.write("Ind\tPopName\tPopFlag\t")
+        subfile.write("\t\t")
 
-        newVCF = open(args.v+ '/LD_Pruned/'+vcf[:-3]+"rep"+str(rep)+".LD_Pruned.vcf",'w') # new vcf for storing info from the random draws
+    for iii,vcf in enumerate(vcf_list):
+        if args.gz == 'true':
+            newVCF = open(args.v + '/LD_Pruned' +vcf[:-6] + "rep" + str(rep) + ".LD_Pruned.vcf", "w") # new vcf if gzipped previously 
+            src = gzip.open(args.v + vcf)
+        elif args.gz == 'false':
+            newVCF = open(args.v+ '/LD_Pruned/'+vcf[:-3]+"rep"+str(rep)+".LD_Pruned.vcf",'w') # new vcf for storing info from the random draws
+            src = open(args.v + vcf)
 
-        src = open(args.v + vcf)
         line_num = 0
         first = 10000         # where to start looking in each scaffold
         current_window = []
@@ -219,7 +232,7 @@ for rep in range(int(args.r)):
                         site_num += 1
 
                 #Here, we have moved past the current window and now need to select a site from all sites within the current window before resetting window bounds and moving on to next window.
-                elif position > end and select == True and site_num!=0:
+                elif position > end and select == True and site_num!=0 and AC != 0 and AC != AN:
                     # if cols[6] == 'PASS' and 1.0-(AN/(num_alleles)) < float(args.m) and AC/AN > float(args.mf) and AC/AN < 1.0-float(args.mf):
                         # select sites here
                     if len(current_window) !=0: #
@@ -281,7 +294,7 @@ for rep in range(int(args.r)):
 
                             oldsite=list(genox)
 
-                            if r2<0.05:
+                            if r2<float(args.c):
                                 vcf_sites+=1
                                 tot_sites+=1
                                 line1 = current_lines[rx]
@@ -341,15 +354,18 @@ for rep in range(int(args.r)):
     #Write header names for each marker
     for marker in markernames:
         structfile.write("%s\t" % marker)
-        subfile.write("%s\t" % marker)
+        if args.s == 'true':
+            subfile.write("%s\t" % marker)
     structfile.write("\n")
-    subfile.write("\n")
+    if args.s == 'true':
+        subfile.write("\n")
     for item in jj:
         structfile.write("%s" % item)       
         structfile.write("\n")
-    for item in kk:
-        subfile.write("%s" % item)       
-        subfile.write("\n")
+    if args.s=='true':
+        for item in kk:
+            subfile.write("%s" % item)       
+            subfile.write("\n")
 
     #remove the temporary files that contained the info that needed to be transposed
     os.remove(args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStruct.txt")
