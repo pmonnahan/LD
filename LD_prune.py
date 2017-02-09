@@ -17,8 +17,10 @@ parser.add_argument('-gz', type = str, metavar = 'gzipped?', required = True, he
 
 args = parser.parse_args()
 
-if os.path.exists(args.v + '/LD_Pruned/') == False: #Create folder for output if it doesn't already exist
-    os.mkdir(args.v + '/LD_Pruned/')
+if args.v.endswith("/") is False:
+    args.v += "/"
+if os.path.exists(args.v + 'LD_Pruned/') == False: #Create folder for output if it doesn't already exist
+    os.mkdir(args.v + 'LD_Pruned/')
 vcf_list = []
 
 for file in os.listdir(args.v): #get names of vcf files in args.v directory
@@ -42,24 +44,24 @@ for rep in range(int(args.r)):
     tot_num_screened=0
     tot_sites=0
 
-    structtempfile= open(args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStruct.txt",'w')
-    subtempfile= open(args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStructSubSample.txt",'w')
-    structfile= open(args.v+ '/LD_Pruned/'+args.o+".StructureInput.rep"+str(rep+1)+".LD_Pruned.txt",'w')
+    structtempfile= open(args.v+ 'LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStruct.txt",'w')
+    subtempfile= open(args.v+ 'LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStructSubSample.txt",'w')
+    structfile= open(args.v+ 'LD_Pruned/'+args.o+".StructureInput.rep"+str(rep+1)+".LD_Pruned.txt",'w')
 
     # structfile.write("Ind\tPopName\tPopFlag\t")
     structfile.write("\t\t")
 
     if args.s=='true': #Create files if subset is true.
-        subfile= open(args.v+ '/LD_Pruned/'+args.o+".StructureInput.rep"+str(rep+1)+".LD_Pruned.Diploidized.txt",'w')
+        subfile= open(args.v+ 'LD_Pruned/'+args.o+".StructureInput.rep"+str(rep+1)+".LD_Pruned.Diploidized.txt",'w')
         #subfile.write("Ind\tPopName\tPopFlag\t")
         subfile.write("\t\t")
 
     for iii,vcf in enumerate(vcf_list):
         if args.gz == 'true':
-            newVCF = open(args.v + '/LD_Pruned' +vcf[:-6] + "rep" + str(rep) + ".LD_Pruned.vcf", "w") # new vcf if gzipped previously 
+            newVCF = open(args.v + 'LD_Pruned/' +vcf[:-6] + "rep" + str(rep) + ".LD_Pruned.vcf", "w") # new vcf if gzipped previously 
             src = gzip.open(args.v + vcf)
         elif args.gz == 'false':
-            newVCF = open(args.v+ '/LD_Pruned/'+vcf[:-3]+"rep"+str(rep)+".LD_Pruned.vcf",'w') # new vcf for storing info from the random draws
+            newVCF = open(args.v+ 'LD_Pruned/'+vcf[:-3]+"rep"+str(rep)+".LD_Pruned.vcf",'w') # new vcf for storing info from the random draws
             src = open(args.v + vcf)
 
         line_num = 0
@@ -348,8 +350,8 @@ for rep in range(int(args.r)):
     subtempfile.close()
 
     #Transposes file
-    jj=transposer.transpose(i=args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStruct.txt",d="\t",)
-    kk=transposer.transpose(i=args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStructSubSample.txt",d="\t",)
+    jj=transposer.transpose(i=args.v+ 'LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStruct.txt",d="\t",)
+    kk=transposer.transpose(i=args.v+ 'LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStructSubSample.txt",d="\t",)
 
     #Write header names for each marker
     for marker in markernames:
@@ -368,8 +370,8 @@ for rep in range(int(args.r)):
             subfile.write("\n")
 
     #remove the temporary files that contained the info that needed to be transposed
-    os.remove(args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStruct.txt")
-    os.remove(args.v+ '/LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStructSubSample.txt")
+    os.remove(args.v+ 'LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStruct.txt")
+    os.remove(args.v+ 'LD_Pruned/'+args.o+".rep"+str(rep)+".LD_Pruned.TransposedStructSubSample.txt")
 
         
     print 'Finished Rep Number: ',rep
