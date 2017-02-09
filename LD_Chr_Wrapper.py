@@ -34,7 +34,9 @@ if args.o.endswith("/") is False:
     args.o += "/"
 if os.path.exists(args.o) is False:
     os.mkdir(args.o)
+if os.path.exists(args.o + '/OandE/') is False:
     os.mkdir(args.o + 'OandE/')
+
 outputdir = args.o
 
 infofile = open(outputdir + "RunParameters.txt",'w')
