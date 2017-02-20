@@ -51,9 +51,9 @@ int main(int argc, char* argv[])
     minFrac=atof(argv[5]);
     minFreq=atof(argv[6]);
     ploidy=atof(argv[8]);
-    DUB=atof(argv[10])
-    DLB=atof(argv[11])
-    WS=atof(argv[9])
+    DUB=atof(argv[10]);
+    DLB=atof(argv[11]);
+    WS=atof(argv[9]);
     pos = new float[numlines*2];
     data = new int[numind*numlines]();
   if (!countfile.is_open()){
@@ -175,16 +175,12 @@ int main(int argc, char* argv[])
 
       }
       }
-      if (p1%10000==0){
-        cout<<argv[7]<<"\t"<<ploidy<<"\t"<<WinSizes[lb]<<"\t"<<WinSizes[lb+1]<<"\t"<<p1<<"\n";
-      }
     }
     R2=R2/(double)numobs;
     R22=R22/(double)numobs;
-    cout<<"Average r2 for SNPs "<<WinSizes[lb]<<" - "<<WinSizes[lb+1]<<" = "<<R2<<"\n";
     cout<<"Number of comparisons = "<<numobs<<"\n";
     for (int aa=0;aa<500;aa++){
-      if (ChromWindCounts!=0.0){
+      if (ChromWindCounts[aa]!=0.0){
       outavg<<argv[7]<<"\t"<<ploidy<<"\t"<<WinSizes[lb]<<"\t"<<WinSizes[lb+1]<<"\t"<<aa * WS<<"\t"<<(aa * WS)+WS<<"\t"<<ChromWinds[aa]<<"\t"<<ChromWindCounts[aa]<<"\t"<<ChromWinds[aa]/ChromWindCounts[aa]<<"\t"<<R2<<"\t"<<R22-pow(R2,2)<<"\n";
   }
   }
