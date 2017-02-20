@@ -33,7 +33,7 @@ for direct in os.listdir(args.i):
     if direct.endswith('.table'):
         for file in os.listdir(args.i + direct + "/"):
             if file.endswith('.tableINFO.txt'):
-                infofile = open(args.i + file, 'r')
+                infofile = open(args.i + direct + "/" + file, 'r')
                 for line in infofile:
                     line = line.strip("\n")
                     line = line.split("\t")
@@ -41,21 +41,22 @@ for direct in os.listdir(args.i):
                     numind.append(line[1])
                     numsites.append(line[2])
 
-        if os.path.exists(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/") is False:
-            os.mkdir(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/")
-        if os.path.exists(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + '/OandE/') is False:
-            os.mkdir(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + '/OandE/')
+        if args.P == 'false':
+            if os.path.exists(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/") is False:
+                os.mkdir(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/")
+            if os.path.exists(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + '/OandE/') is False:
+                os.mkdir(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + '/OandE/')
 
-        outputdir = args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/"
+            outputdir = args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/"
 
-        infofile = open(outputdir + "RunParameters.txt", 'w')
-        infofile.write("input directory = " + args.i + "\n" +
-                       "ploidy = " + args.p + "\n" +
-                       "minimum fraction of genotyped individuals = " + args.mf + "\n" +
-                       "minimum allele frequency = " + args.maf + "\n" +
-                       "output directory = " + args.o + "\n" +
-                       "window size = " + args.ws + "\n" +
-                       "r2 distance = " + str(args.d) + "\n")
+            infofile = open(outputdir + "RunParameters.txt", 'w')
+            infofile.write("input directory = " + args.i + "\n" +
+                           "ploidy = " + args.p + "\n" +
+                           "minimum fraction of genotyped individuals = " + args.mf + "\n" +
+                           "minimum allele frequency = " + args.maf + "\n" +
+                           "output directory = " + args.o + "\n" +
+                           "window size = " + args.ws + "\n" +
+                           "r2 distance = " + str(args.d) + "\n")
 
 
         for j, pop in enumerate(pops):
