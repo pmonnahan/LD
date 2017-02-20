@@ -40,7 +40,7 @@ for direct in os.listdir(args.i):
                     pops.append(line[0])
                     numind.append(line[1])
                     numsites.append(line[2])
-
+        inputdir = args.i + direct + "/"
         outputdir = args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/"
 
         if args.P == 'false':
@@ -73,7 +73,7 @@ for direct in os.listdir(args.i):
                          '#SBATCH --mem=' + args.mem + '\n' +
                          'LD_LIBRARY_PATH=/nbi/software/testing/bin/core/../..//gcc/5.1.0/x86_64/lib64:$LD_LIBRARY_PATH\n' +
                          'export LD_LIBRARY_PATH\n' +
-                         '/nbi/software/testing/ldr2/0.1/x86_64/LD_Chr ' + args.i + pop + '.genotypes.txt ' + args.i + pop + '.positions.txt ' + numind[j] + ' ' + numsites[j] + ' ' + args.mf + ' ' + args.maf + ' ' + outputdir + pop + ' ' + args.p + ' ' + args.ws + ' ' + str(dub) + ' ' + str(dlb) + '\n')
+                         '/nbi/software/testing/ldr2/0.1/x86_64/LD_Chr ' + inputdir + pop + '.genotypes.txt ' + inputdir + pop + '.positions.txt ' + numind[j] + ' ' + numsites[j] + ' ' + args.mf + ' ' + args.maf + ' ' + outputdir + pop + ' ' + args.p + ' ' + args.ws + ' ' + str(dub) + ' ' + str(dlb) + '\n')
             shfile.close()
 
 
