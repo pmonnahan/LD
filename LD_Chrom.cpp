@@ -19,9 +19,12 @@ float minFrac;
 float minFreq;
 int * r2dist;
 float ploidy;
+float DUB;
+float DLB;
+float WS;
 
-//update at some point to do window based analysis to see if tetraploids have lower recombination towards ends relative to diploids
-//also consider removing the MinimumFractionGenotyped option.  Sample size has major effect on expected value of r2, so data from differing sample size should not be included.
+// Command to compile on cluster using gcc-5.1.0:  g++ -std=c++11 -Wall -fno-use-linker-plugin -o ../x86_64/LD_Chr LD_Chrom.cpp
+
 int WinNum = 1;
 
 // Scaff length of chromosome 2 is 19,642,879 == 20, 1Mb windows
