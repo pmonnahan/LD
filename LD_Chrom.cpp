@@ -100,7 +100,6 @@ int main(int argc, char* argv[])
       double R2 = 0.0;
       double R22 = 0.0;
       int numobs=0;
-      if (WinSizes[lb+1] - WinSizes[lb] < 2000.0){
     //Calculate r2 for given window size
       for(int p1 = 0; p1<numlines; p1++){
  //       cout<<data[5];
@@ -187,7 +186,6 @@ int main(int argc, char* argv[])
     for (int aa=0;aa<500;aa++){
       if (ChromWindCounts!=0.0){
       outavg<<argv[7]<<"\t"<<ploidy<<"\t"<<WinSizes[lb]<<"\t"<<WinSizes[lb+1]<<"\t"<<aa * WS<<"\t"<<(aa * WS)+WS<<"\t"<<ChromWinds[aa]<<"\t"<<ChromWindCounts[aa]<<"\t"<<ChromWinds[aa]/ChromWindCounts[aa]<<"\t"<<R2<<"\t"<<R22-pow(R2,2)<<"\n";
-  }
   }
   }
 }
