@@ -41,13 +41,13 @@ for direct in os.listdir(args.i):
                     numind.append(line[1])
                     numsites.append(line[2])
 
-        if args.P == 'false':
-            if os.path.exists(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/") is False:
-                os.mkdir(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/")
-            if os.path.exists(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + '/OandE/') is False:
-                os.mkdir(args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + '/OandE/')
+        outputdir = args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/"
 
-            outputdir = args.i + direct + "/" + 'output_ws' + str(int(args.ws) / 1000) + "kb_d" + str(args.d) + "_mf" + args.mf + "_maf" + args.maf + "/"
+        if args.P == 'false':
+            if os.path.exists(outputdir) is False:
+                os.mkdir(outputdir)
+            if os.path.exists(outputdir + 'OandE/') is False:
+                os.mkdir(outputdir + 'OandE/')
 
             infofile = open(outputdir + "RunParameters.txt", 'w')
             infofile.write("input directory = " + args.i + "\n" +
