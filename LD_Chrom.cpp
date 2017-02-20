@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
     cout<<"Number of comparisons = "<<numobs<<"\n";
     for (int aa=0;aa<500;aa++){
       if (ChromWindCounts[aa]!=0.0){
-      outavg<<argv[7]<<"\t"<<ploidy<<"\t"<<WinSizes[lb]<<"\t"<<WinSizes[lb+1]<<"\t"<<aa * WS<<"\t"<<(aa * WS)+WS<<"\t"<<ChromWinds[aa]<<"\t"<<ChromWindCounts[aa]<<"\t"<<ChromWinds[aa]/ChromWindCounts[aa]<<"\t"<<R2<<"\t"<<R22-pow(R2,2)<<"\n";
+      outavg<<argv[7]<<"\t"<<ploidy<<"\t"<<DLB<<"\t"<<DUB<<"\t"<<aa * WS<<"\t"<<(aa * WS)+WS<<"\t"<<ChromWinds[aa]<<"\t"<<ChromWindCounts[aa]<<"\t"<<ChromWinds[aa]/ChromWindCounts[aa]<<"\t"<<R2<<"\t"<<R22-pow(R2,2)<<"\n";
   }
   }
 }
