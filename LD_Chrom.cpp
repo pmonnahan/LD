@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
             numobs++;
 
             //Add observation to bin of r2 histogram
-            for (int aa=0;aa<20;aa++){
+            for (int aa=0;aa<500;aa++){
               if ((float(pos[p1*2]) + float(pos[p1*2])) / 2.0 > aa * WS && (float(pos[p1*2]) + float(pos[p1*2])) / 2.0 < (aa * WS) + WS){
                 r2dist[aa]+=1;
                 ChromWinds[aa]+=r2;
