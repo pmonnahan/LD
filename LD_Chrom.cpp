@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
  //         cout<<"here1\n";
         for(int p2 =p1+1; p2<numlines;p2++){
 
-  //      cout<<pos[p2*2] - pos[p1*2]<<"\n";
+//        cout<<pos[p2*2] - pos[p1*2]<<"\t"<<DUB<<"\t"<<DLB<<"\n";
           if (pos[p2*2] - pos[p1*2] < DUB && pos[p2*2] - pos[p1*2] > DLB && pos[p2*2+1]>minFreq && pos[p2*2+1]<1.0-minFreq){
 
 //          cout<<"here\n";
@@ -135,10 +135,10 @@ int main(int argc, char* argv[])
           float M1=(float)m1/(float)indcount3;
           float M2=(float)m2/(float)indcount3;
 
-          if ((float)indcount3/(float)numind>minFrac){
-            //cout<<"here\n";
+          if ((float)indcount3/(float)numind>=minFrac){
+//            cout<<"here\n";
             for(int ni = 0; ni<numind;ni++){
-   //           cout<<data[p2*numind+ni]<<"\t"<<pos[p2*2+1]<<"\t"<<data[p1*numind+ni]<<"\t"<<pos[p1*2+1]<<"\t"<<p1<<"\t"<<p2<<"\t"<<ni<<"\n";
+//              cout<<data[p2*numind+ni]<<"\t"<<pos[p2*2+1]<<"\t"<<data[p1*numind+ni]<<"\t"<<pos[p1*2+1]<<"\t"<<p1<<"\t"<<p2<<"\t"<<ni<<"\n";
               if ((data[p2*numind+ni]!=9) && (data[p1*numind+ni]!=9)){
 //                cout<<data[p2*numind+ni]<<'\t'<<M2<<'\t'<<data[p1*numind+ni]<<'\t'<<M1<<" 1 \n";
                 Zcv+=(data[p2*numind+ni]-M2)*(data[p1*numind+ni]-M1);
