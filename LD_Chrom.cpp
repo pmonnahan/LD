@@ -191,14 +191,3 @@ int main(int argc, char* argv[])
 
 
 
-//    for (int g = 0; g<numlines*2;g++){
-//      cout<<pos[g]<<"\n";
-//    }
-    
-//    cout<<"WindowSize = "<<WSLB<<" - "<<WSUB<<"\n";
-//    cout<<"Covariance = "<<cv <<"\n";
-//    cout<<"V1 = "<<v1<<"\n";
-//    cout<<"V2 = "<<v2<<"\n";
-//    cout<<"r = "<<r<<"\n";
-//    cout<<"r2 = "<<r2<<"\n";  
-

@@ -1,3 +1,11 @@
+#########################
+# Author: Patrick Monnahan
+# Purpose:  This is a wrapper that submits jobs to the NBI slurm cluster that run LD.cpp for each population
+#
+#!!Must change library path based on the gcc version used in the compilation
+#command for compilation is g++ -std=c++11 -Wall -fno-use-linker-plugin -o ../x86_64/LD LD.cpp
+#and gcc version is 5.3.1
+
 import os, sys, argparse, subprocess
 
 #create variables that can be entered as arguments in command line
@@ -17,9 +25,7 @@ pops=[]
 numind=[]
 numsites=[]
 
-#!!Must change library path based on the gcc version used in the compilation
-#command for compilation is g++ -std=c++11 -Wall -fno-use-linker-plugin -o ../x86_64/LD LD.cpp
-#and gcc version is 5.3.1
+
 for file in os.listdir(args.i):
 	if file.endswith('.tableINFO.txt'):
 		infofile=open(args.i+file,'r')
@@ -53,7 +59,7 @@ for j,pop in enumerate(pops):
 					'#SBATCH -J LD.'+pop+'.sh'+'\n'+
 					'#SBATCH -e '+outputdir+'OandE/LD.'+pop+'.err'+'\n'+
 					'#SBATCH -o '+outputdir+'OandE/LD.'+pop+'.out'+'\n'+
-					'#SBATCH -p nbi-long\n'+
+					'#SBATCH -p nbi-medium\n'+
 					'#SBATCH -n 1\n'+
 					'#SBATCH -t 1-00:00\n'+
 					'#SBATCH --mem='+args.mem+'\n'+

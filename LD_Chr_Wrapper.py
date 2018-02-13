@@ -1,3 +1,11 @@
+###########################
+# Author: Patrick Monnahan
+# Purpose: This is a wrapper to submit jobs to NBI slurm cluster that run LD_chrom.cpp for each population.
+#
+# !!Must change library path based on the gcc version used in the compilation
+# command for compilation is g++ -std=c++11 -Wall -fno-use-linker-plugin -o ../x86_64/LD LD.cpp
+# and gcc version is 5.1.0
+
 import os
 import argparse
 import subprocess
@@ -12,7 +20,7 @@ parser.add_argument('-maf', type=str, metavar='MinimumAlleleFrequency', default=
 parser.add_argument('-ws', type=str, metavar='WindowSize', default='1000000', help='window size within which to calculate r2 between snps of given distance apart (specified by -d argument)')
 parser.add_argument('-d', type=int, metavar='SNPdistance', default=10000, help='will calculate r2 for SNPs between d and d - 1000 bp apart')
 parser.add_argument('-P', type=str, metavar='print', required=True, help='if true, then print shell scripts and not execute them')
-parser.add_argument('-mem', type=str, metavar='memory', default='10000', help='number of Mb requested to run each job')
+parser.add_argument('-mem', type=str, metavar='memory', default='8000', help='number of Mb requested to run each job')
 
 args = parser.parse_args()
 
@@ -26,9 +34,7 @@ dlb = args.d - 1000
 if args.i.endswith("/") is False:
     args.i += "/"
 
-# !!Must change library path based on the gcc version used in the compilation
-# command for compilation is g++ -std=c++11 -Wall -fno-use-linker-plugin -o ../x86_64/LD LD.cpp
-# and gcc version is 5.1.0
+
 for direct in os.listdir(args.i):
     if direct.endswith('.table'):
         for file in os.listdir(args.i + direct + "/"):

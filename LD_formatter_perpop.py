@@ -1,3 +1,11 @@
+########################################
+# Author: Patrick Monnahan
+# Purpose: This code is meant to parse a table file created from GATK's VariantsToTable function that contains multiple individuals from multiple populations.  It will parse individuals by population and produce two files per population.  One file contains the positions of each site and the other file contains the genotypes for each individual in the population recoded as allele counts.  These inputs can then be used by LD.cpp or LD_Chrom.cpp to calculate average correlations among genotype values across sites
+########################################
+
+
+
+
 import os
 import argparse
 
@@ -12,17 +20,17 @@ parser.add_argument('-mip', type=int, metavar='MinimumIndividualsInPopulation', 
 
 args = parser.parse_args()
 
-if os.path.exists(args.o) is False:
+if os.path.exists(args.o) is False: # Create output directory
     os.mkdir(args.o)
 outdir = args.o
 
 table_files = []
-for fil in os.listdir(args.t):
+for fil in os.listdir(args.t):  # Get list of table files
     if fil.endswith(".table"):
         table_files.append(fil)
 
 
-for file in table_files:
+for file in table_files:  # Cycle over table files.  These are likely separated by chromosome
 
     pops = []
     oldpop = ""
@@ -34,15 +42,13 @@ for file in table_files:
     if os.path.exists(args.o + '/LDinput_' + file + '/') is False:
         os.mkdir(args.o + '/LDinput_' + file + '/')
     outdir = args.o + '/LDinput_' + file + '/'
-    infofile = open(outdir + file + 'INFO.txt', 'w')
+    infofile = open(outdir + file + 'INFO.txt', 'w') # Create file to hold the summary information for each population
 
-    with open(args.t + file, "rU") as table:
+    with open(args.t + file, "rU") as table:  # open the current table file
         prefix = args.t[:-6]
-        # posFile=open(prefix+".positions.txt","w")
-        # GTfile=open(prefix+".genotypes.txt","w")
         numsites = 0
         for i, line in enumerate(table):
-            if i == 0:
+            if i == 0:  # Get list of populations and number of individuals from the header line of the table file.  
 
                 line = line.strip("\n")
                 line = line.split("\t")
@@ -50,15 +56,15 @@ for file in table_files:
                 scaf = line[0]
 
                 for k, j in enumerate(line[2:]):
-                    curpop = j.split("_")[0]
+                    curpop = j.split("_")[0]  # This expects population name to be first part of individual name followed by underscore (e.g. POP1_19)
                     if k == 0:
                         oldpop = curpop
                         pops.append(curpop)
                         indkey.append(curpop)
                         indcount = 1
-                        exec "f%dgeno = open('%s%s.genotypes.txt','w')" % (len(pops), outdir, curpop)
+                        exec "f%dgeno = open('%s%s.genotypes.txt','w')" % (len(pops), outdir, curpop) # creates genotypes file using ascertained population name
                         exec "f%dpos = open('%s%s.positions.txt','w')" % (len(pops), outdir, curpop)
-                    elif curpop != oldpop:
+                    elif curpop != oldpop: # Found all individuals from previous pop.  Write out info and move on to next population 
                         popcount.append(indcount)
                         sitecount.append(0)
                         pops.append(curpop)
@@ -76,9 +82,7 @@ for file in table_files:
                 exec "f%dgeno = open('%s%s.genotypes.txt','w')" % (len(pops), outdir, curpop)
                 exec "f%dpos = open('%s%s.positions.txt','w')" % (len(pops), outdir, curpop)
 
-
-
-            if i > 0:
+            if i > 0: # Start parsing the actual data in the table file
                 line = line.strip("\n")
                 line = line.split("\t")
                 pos = line[1]
@@ -88,7 +92,7 @@ for file in table_files:
                     GT = ''
                     alt = False
                     numobs = 0
-                    if popcount[num] >= int(args.mip):
+                    if popcount[num] >= int(args.mip): # Only report data for populations that meet criteria regarding minimum number of individuals in the population
                         for ind in range(0, popcount[num]):
                             gt = line[2 + sum(popcount[:num]) + ind].split("/")
                             if gt[0] == '.':
