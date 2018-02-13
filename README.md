@@ -1,4 +1,4 @@
-##Psuedo-LD calculations
+# Psuedo-LD calculations
 
 
 > This repository contains a set of scripts that calculate the correlation of genotypes across the genome.  There are two primary programs LD.cpp and LD_chrom.cpp.  The former calculates the average correlations for a range of distances across the genome.  The latter calculates correlations between sites of a given distance in windows across chromosomes.  The other scripts are wrappers that implement this on a cluster computing system.  It is currently designed for a specific cluster, but can be generalized somewhat easily.  
